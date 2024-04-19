@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-//    id "com.google.gms.google-services"
+    id "dev.flutter.flutter-gradle-plugin"
 }
 
 def localProperties = new Properties()
@@ -21,11 +21,12 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
+
 apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace "com.example.ficufoide"
-    compileSdkVersion 34
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -62,11 +63,16 @@ android {
     }
 }
 
+
 flutter {
     source '../..'
 }
 
+//tasks.named('mapDebugSourceSetPaths') {
+//    dependsOn('processDebugGoogleServices')
+//}
+
 dependencies {
-    implementation platform("com.google.firebase:firebase-bom:32.8.1")
-    implementation 'com.google.firebase:firebase-analytics:20.0.1'
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
 }
