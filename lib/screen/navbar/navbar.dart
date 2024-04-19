@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
+import 'dart:io';
 import 'package:ficufoide/screen/home/home.page.dart';
+import 'package:ficufoide/screen/results/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 class NavBar extends StatefulWidget {
-  NavBar({Key? key}) : super(key: key);
+  NavBar({Key? key,}) : super(key: key);
   static String id = "NavBar";
   bool loading = false;
-
   @override
   State<NavBar> createState() => _NavBarState();
 }
@@ -20,7 +20,7 @@ class _NavBarState extends State<NavBar> {
     Home(),
   ];
 
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
 
   void _onItemTapped(int index) {
     setState(() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756250939928",
+    "project_id": "ficufoide",
+    "storage_bucket": "ficufoide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756250939928:android:e250ed822dd3dd346b696d",
+        "android_client_info": {
+          "package_name": "com.example.ficufoide"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-WIjNL3BjjmWqZaoSiW0RVTLxQjKwYB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
