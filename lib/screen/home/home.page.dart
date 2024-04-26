@@ -12,6 +12,8 @@ import 'package:tflite/tflite.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../fetch/fetch.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -27,6 +29,7 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     loadModel();
+    fetchRole(setState);
     super.initState();
   }
   Future loadModel() async {
@@ -48,21 +51,28 @@ class _HomeState extends State<Home> {
     setState(() {
       _results = recognitions!;
       _image = image;
-      resultImage = image;
-      res = recognitions[0]['label'];
+      resText = recognitions[0]['label'];
     });
-    print(_results);
-    print(res);
+    print('res: $_results');
+    print(resText);
   }
 
   Future<void> _openImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? pickedImage =
     await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
-    if (pickedImage != null) {
+    if (pickedImage != null) {if (pickedImage != null) {
       File image = File(pickedImage.path);
+      resultImage = File(pickedImage.path);
+      await classifyImage(image);
 
-      classifyImage(image);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultPage(),
+        ),
+      );
+    }
     }
   }
 
@@ -73,8 +83,8 @@ class _HomeState extends State<Home> {
     );
     if (pickedFile != null) {
       File image = File(pickedFile.path);
-
-      classifyImage(image);
+      resultImage = File(pickedFile.path);
+      await classifyImage(image);
 
       Navigator.push(
         context,

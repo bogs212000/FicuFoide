@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ficufoide/screen/food/food.info.dart';
 import 'package:ficufoide/screen/home/home.page.dart';
 import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -27,7 +28,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: NavBar(),
       routes: {
-        // '/showplacedata': (context) => ShowPlaceData(),
+        '/showFoodInfoPage': (context) => FoodInfoPage(),
       },
     );
   }

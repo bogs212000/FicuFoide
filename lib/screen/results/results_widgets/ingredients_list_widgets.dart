@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficufoide/cons/image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -42,7 +43,7 @@ class _IngredientsWidgetsState extends State<IngredientsWidgets> {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection("foods")
-                .doc(res)
+                .doc('$resText')
                 .collection('ingredients')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -81,36 +82,27 @@ class _IngredientsWidgetsState extends State<IngredientsWidgets> {
                   DocumentSnapshot document = snapshot.data!.docs[index];
                   Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                   return Padding(
-                    padding: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-                    child: Card(
-                      shadowColor: Color.fromARGB(255, 34, 34, 34),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  data['1'].toString(),
-                                  maxLines: 1,
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Container(
+                      width: double.infinity,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  data['ingredient'].toString(),
                                   softWrap: false,
-                                  overflow: TextOverflow.ellipsis,
+                                  overflow: TextOverflow.fade,
                                   style: TextStyle(
                                     fontSize: 15,
-                                    fontWeight: FontWeight.w200,
+                                    fontWeight: FontWeight.w300,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   );

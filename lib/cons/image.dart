@@ -1,4 +1,7 @@
 import 'dart:io';
 
 File? resultImage;
-String? res;
+String? resText;
+String? foodName;
+String? foodInfo;
+String? foodInfoPageDocName;

@@ -1,2 +1,5 @@
-0 Port Adobo
-1 Onion
+0 Green chillie (Siling Haba)
+1 Garlic
+2 Onion
+3 Ginataang Tulingan
+4 Pork Adobo
