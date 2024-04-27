@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ficufoide/screen/home/home_widgets/popular.widget.dart';
 import 'package:ficufoide/screen/home/home_widgets/topics.widget.dart';
 import 'package:ficufoide/cons/image.dart';
@@ -40,22 +41,47 @@ class _HomeState extends State<Home> {
         model: "assets/image_model/model_unquant.tflite", labels: "assets/image_model/labels.txt"))!;
     print("Models loading status: $res");
   }
+
+  //classify image
   Future classifyImage(File image) async {
     final List? recognitions = await Tflite.runModelOnImage(
-        path: image.path,
-        imageMean: 0.0,
-        imageStd: 255.0,
-        numResults: 1,
-        threshold: 0.2,
-        asynch: true);
-    setState(() {
-      _results = recognitions!;
-      _image = image;
-      resText = recognitions[0]['label'];
-    });
-    print('res: $_results');
-    print(resText);
+      path: image.path,
+      imageMean: 0.0,
+      imageStd: 255.0,
+      numResults: 1,
+      threshold: 0.2,
+      asynch: true,
+    );
+
+    // Check if recognitions list is not null and contains at least one recognition
+    if (recognitions != null && recognitions.isNotEmpty) {
+      // Get the first recognition result
+      final recognition = recognitions[0];
+
+      // Check if the confidence score of the recognition is below a certain threshold
+      if (recognition['confidence'] < 0.6) { // Adjust the threshold as needed
+        // Handle the case where recognition confidence is too low
+        setState(() {
+          resCon = 'low';
+        });
+        print(resCon);
+
+      }
+
+      // Update UI with recognition result
+      setState(() {
+        _results = recognitions;
+        _image = image;
+        resText = recognition['label'];
+      });
+      print('res: $_results');
+      print(resText);
+    } else {
+      // Handle the case where no recognition results are available
+      throw Exception('No recognition results available.');
+    }
   }
+
 
   Future<void> _openImagePicker() async {
     final ImagePicker _picker = ImagePicker();
@@ -85,7 +111,6 @@ class _HomeState extends State<Home> {
       File image = File(pickedFile.path);
       resultImage = File(pickedFile.path);
       await classifyImage(image);
-
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -127,8 +152,8 @@ class _HomeState extends State<Home> {
                           },
                           child: CircleAvatar(
                             radius: 40,
-                            backgroundImage: NetworkImage(
-                                'https://scontent.fmnl4-6.fna.fbcdn.net/v/t39.30808-6/399241370_1591190431411220_8935650865096509315_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGuxWmxMpgGsTYYFKmR8slA7JHVzTxU4lnskdXNPFTiWaSctNiuHQyiWD62f190qE_ffxwFAUejfV1JNZ6on3FZ&_nc_ohc=qymh6IuFLEAAb7JKfu5&_nc_ht=scontent.fmnl4-6.fna&oh=00_AfC-2bRATbfyeE60FQdgiKBH3yjQNTWsFezfxg4j9-nJLg&oe=66279158'),
+                            backgroundImage: CachedNetworkImageProvider(
+                                'https://t4.ftcdn.net/jpg/04/52/75/21/360_F_452752187_LCS2HVvLfrXDhpVmufmMZ5N6vNee8E0e.jpg'),
                           ),
                         ),
                         Spacer(),

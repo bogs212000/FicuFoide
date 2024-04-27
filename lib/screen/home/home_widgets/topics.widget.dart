@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -65,7 +66,7 @@ class _TopicsWidgetState extends State<TopicsWidget> {
                                 width: 90,
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
-                                      image: NetworkImage(
+                                      image: CachedNetworkImageProvider(
                                         'https://www.cdc.gov/foodsafety/images/comms/features/GettyImages-520363077-medium.jpg?_=58727',
                                       ),
                                       fit: BoxFit.cover,
@@ -117,7 +118,7 @@ class _TopicsWidgetState extends State<TopicsWidget> {
                                   width: 90,
                                   decoration: BoxDecoration(
                                       image: DecorationImage(
-                                        image: NetworkImage(
+                                        image: CachedNetworkImageProvider(
                                           'https://www.cdc.gov/foodsafety/images/comms/features/GettyImages-520363077-medium.jpg?_=58727',
                                         ),
                                         fit: BoxFit.cover,

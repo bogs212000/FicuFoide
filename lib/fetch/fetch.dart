@@ -11,6 +11,9 @@ Future<void> fetchFoodName(Function setState) async {
 
     setState(() {
       foodName = snapshot.data()?['foodName'];
+      ingredientsRes =  snapshot.data()?['ingredients'];
+      instructionsRes =  snapshot.data()?['instructions'];
+      platingRes =  snapshot.data()?['plating'];
     });
     print('$foodName');
   } catch (e) {

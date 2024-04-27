@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
+import 'package:ficufoide/screen/food/widgets/add.images.food.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ficufoide/cons/image.dart';
 import 'package:ficufoide/fetch/fetch.dart';
@@ -27,6 +28,11 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   final TextEditingController foodIngredientsController = TextEditingController();
   final TextEditingController foodInstructionsController = TextEditingController();
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +201,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   ),
                 ],
               ),
-              FoodImages(),
+              AddFoodImages(),
               SizedBox(height: 10),
               //ingredients
               Padding(
@@ -204,7 +210,22 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   children: [
                     'Ingredients '.text.bold.size(20).make(),
                     Spacer(),
-                    'View'.text.bold.size(15).color(Colors.grey).make(),
+                    CupertinoSwitch(
+                      activeColor: Colors.green.shade900,
+                      thumbColor: Colors.white,
+                      trackColor: Colors.grey,
+                      value: ingredients!,
+                      onChanged: (value) async {
+                        await FirebaseFirestore.instance
+                            .collection('foods')
+                            .doc('$foodInfoPageDocName')
+                            .update({'ingredients': value});
+
+                        setState(() {
+                          ingredients = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -330,7 +351,22 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   children: [
                     'Instructions '.text.bold.size(20).make(),
                     Spacer(),
-                    'View'.text.bold.size(15).color(Colors.grey).make(),
+                    CupertinoSwitch(
+                      activeColor: Colors.green.shade900,
+                      thumbColor: Colors.white,
+                      trackColor: Colors.grey,
+                      value: instructions!,
+                      onChanged: (value) async {
+                        await FirebaseFirestore.instance
+                            .collection('foods')
+                            .doc('$foodInfoPageDocName')
+                            .update({'instructions': value});
+
+                        setState(() {
+                          instructions = value;
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),

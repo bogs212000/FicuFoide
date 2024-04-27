@@ -103,6 +103,9 @@ class _FoodAddPageState extends State<FoodAddPage> {
                                       'foodName': collectionName.text
                                           .toString()
                                           .substring(2),
+                                      'ingredients': true,
+                                      'instructions': true,
+                                      'plating': true,
                                     });
                                     collectionName.clear();
                                   } catch (e) {
@@ -190,6 +193,9 @@ class _FoodAddPageState extends State<FoodAddPage> {
                           child: GestureDetector(
                             onTap: () {
                               setState(() {
+                                ingredients = data['ingredients'];
+                                instructions = data['instructions'];
+                                plating = data['plating'];
                                 foodInfoPageDocName = data['docName'];
                               });
                               Navigator.pushNamed(context, '/showFoodInfoPage');

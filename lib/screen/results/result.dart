@@ -7,6 +7,7 @@ import 'package:ficufoide/fetch/fetch.dart';
 import 'package:ficufoide/screen/results/results_widgets/food_images.dart';
 import 'package:ficufoide/screen/results/results_widgets/ingredients_list_widgets.dart';
 import 'package:ficufoide/screen/results/results_widgets/plating_widgets.dart';
+import 'package:ficufoide/screen/results/results_widgets/res.low.dart';
 import 'package:ficufoide/screen/results/results_widgets/steps_widgets.dart';
 import 'package:ficufoide/screen/results/results_widgets/users_suggest_widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,15 +23,25 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+
   @override
   void initState() {
     // TODO: implement initState
     fetchFoodName(setState);
     super.initState();
   }
+
+  @override
+  void dispose() {
+     ingredientsRes = null;
+     instructionsRes = null;
+     platingRes = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return resCon == 'low' ? ResLow() : Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: 'Results'.text.bold.make(),
@@ -83,271 +94,299 @@ class _ResultPageState extends State<ResultPage> {
               ),
               //Name
               Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('foods')
-                      .doc(resText)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(); // Display loading indicator while fetching data
-                    }
-                    if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return Text('...'); // Display message if document doesn't exist
-                    }
-                    var data = snapshot.data!.data() as Map<String, dynamic>?; // Cast data to Map<String, dynamic> explicitly
-                    if (data == null) {
-                      return Text('...'); // Handle null case
-                    }
-                    var foodName = data['foodName'] as String?; // Access the 'foodName' field
-                    if (foodName == null) {
-                      return Text('...'); // Handle null case
-                    }
-                    return Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            foodName,
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                            overflow: TextOverflow.ellipsis,
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('foods')
+                        .doc(resText)
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Display loading indicator while fetching data
+                      }
+                      if (!snapshot.hasData || !snapshot.data!.exists) {
+                        return Text(
+                            '...'); // Display message if document doesn't exist
+                      }
+                      var data = snapshot.data!.data() as Map<String,
+                          dynamic>?; // Cast data to Map<String, dynamic> explicitly
+                      if (data == null) {
+                        return Text('...'); // Handle null case
+                      }
+                      var foodName = data['foodName']
+                          as String?; // Access the 'foodName' field
+                      if (foodName == null) {
+                        return Text('...'); // Handle null case
+                      }
+                      return Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              foodName,
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                )
-
-              ),
+                        ],
+                      );
+                    },
+                  )),
               //Intro
               Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10, bottom: 5),
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('foods')
-                      .doc(resText)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator(); // Display loading indicator while fetching data
-                    }
-                    if (!snapshot.hasData || !snapshot.data!.exists) {
-                      return Text('...'); // Display message if document doesn't exist
-                    }
-                    var data = snapshot.data!.data() as Map<String, dynamic>?; // Cast data to Map<String, dynamic> explicitly
-                    if (data == null) {
-                      return Text('...'); // Handle null case
-                    }
-                    var foodInfo = data['info'] as String?; // Access the 'foodName' field
-                    if (foodInfo == null) {
-                      return Text('...'); // Handle null case
-                    }
-                    return Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            foodInfo,
-                            style: TextStyle(fontSize: 15,),
-                            overflow: TextOverflow.fade,
+                  padding:
+                      const EdgeInsets.only(left: 10, right: 10, bottom: 5),
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('foods')
+                        .doc(resText)
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // Display loading indicator while fetching data
+                      }
+                      if (!snapshot.hasData || !snapshot.data!.exists) {
+                        return Text(
+                            '...'); // Display message if document doesn't exist
+                      }
+                      var data = snapshot.data!.data() as Map<String,
+                          dynamic>?; // Cast data to Map<String, dynamic> explicitly
+                      if (data == null) {
+                        return Text('...'); // Handle null case
+                      }
+                      var foodInfo = data['info'] as String?;
+                        ingredientsRes = data['ingredients'];
+                        instructionsRes = data['instructions'];
+                        platingRes = data['plating']; // Access the 'foodName' field
+                      if (foodInfo == null) {
+                        return Text('...'); // Handle null case
+                      }
+                      return Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              foodInfo,
+                              style: TextStyle(
+                                fontSize: 15,
+                              ),
+                              overflow: TextOverflow.fade,
+                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  },
-                )
-
-              ),
+                        ],
+                      );
+                    },
+                  )),
               FoodImages(),
               SizedBox(height: 10),
               //ingredients
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Row(
-                  children: [
-                    'Ingredients '.text.bold.size(20).make(),
-                    Spacer(),
-                    'View'.text.bold.size(15).color(Colors.grey).make(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                width: double.infinity,
-                height: 150,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("foods")
-                      .doc('$resText')
-                      .collection('ingredients')
-                      .snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Something went wrong!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 231, 25, 25),
-                            ),
-                          )
+              ingredientsRes == true
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        children: [
+                          'Ingredients '.text.bold.size(20).make(),
+                          Spacer(),
+                          'View'.text.bold.size(15).color(Colors.grey).make(),
                         ],
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                      );
-                    }
-                    if (snapshot.data!.size == 0) {
-                      return Center(
-                        child: Text('No Update yet!'),
-                      );
-                    }
-                    return ListView.builder(
-                      physics: snapshot.data!.size <= 2
-                          ? NeverScrollableScrollPhysics()
-                          : BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(top: 0),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot document = snapshot.data!.docs[index];
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Container(
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        data['ingredient'].toString(),
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                      ),
+                    )
+                  : SizedBox(),
+              SizedBox(height: 10),
+              ingredientsRes == true
+                  ? Container(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      width: double.infinity,
+                      height: 150,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("foods")
+                            .doc('$resText')
+                            .collection('ingredients')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  "Something went wrong!",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 231, 25, 25),
+                                  ),
+                                )
                               ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center();
+                          }
+                          if (snapshot.data!.size == 0) {
+                            return Center(
+                              child: Text('No Update yet!'),
+                            );
+                          }
+                          return ListView.builder(
+                            physics: snapshot.data!.size <= 2
+                                ? NeverScrollableScrollPhysics()
+                                : BouncingScrollPhysics(),
+                            padding: EdgeInsets.only(top: 0),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot document =
+                                  snapshot.data!.docs[index];
+                              Map<String, dynamic> data =
+                                  document.data()! as Map<String, dynamic>;
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              data['ingredient'].toString(),
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox(),
               //instruction
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: Row(
-                  children: [
-                    'Instructions '.text.bold.size(20).make(),
-                    Spacer(),
-                    'View'.text.bold.size(15).color(Colors.grey).make(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                width: double.infinity,
-                height: 150,
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection("foods")
-                      .doc('$resText')
-                      .collection('instructions')
-                      .snapshots(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text(
-                            "Something went wrong!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 231, 25, 25),
-                            ),
-                          )
+              instructionsRes == true
+                  ? Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: Row(
+                        children: [
+                          'Instructions '.text.bold.size(20).make(),
+                          Spacer(),
+                          'View'.text.bold.size(15).color(Colors.grey).make(),
                         ],
-                      );
-                    }
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                      );
-                    }
-                    if (snapshot.data!.size == 0) {
-                      return Center(
-                        child: Text('No Update yet!'),
-                      );
-                    }
-                    return ListView.builder(
-                      physics: snapshot.data!.size <= 2
-                          ? NeverScrollableScrollPhysics()
-                          : BouncingScrollPhysics(),
-                      padding: EdgeInsets.only(top: 0),
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot document = snapshot.data!.docs[index];
-                        Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 10),
-                          child: Container(
-                            width: double.infinity,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        data['step'].toString().substring(0, 6),
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Flexible(
-                                      child: Text(
-                                        data['step'].toString().substring(7),
-                                        overflow: TextOverflow.fade,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                      ),
+                    )
+                  : SizedBox(),
+              SizedBox(height: 10),
+              instructionsRes == true
+                  ? Container(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      width: double.infinity,
+                      height: 150,
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection("foods")
+                            .doc('$resText')
+                            .collection('instructions')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Text(
+                                  "Something went wrong!",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 231, 25, 25),
+                                  ),
+                                )
                               ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
+                            );
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center();
+                          }
+                          if (snapshot.data!.size == 0) {
+                            return Center(
+                              child: Text('No Update yet!'),
+                            );
+                          }
+                          return ListView.builder(
+                            physics: snapshot.data!.size <= 2
+                                ? NeverScrollableScrollPhysics()
+                                : BouncingScrollPhysics(),
+                            padding: EdgeInsets.only(top: 0),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot document =
+                                  snapshot.data!.docs[index];
+                              Map<String, dynamic> data =
+                                  document.data()! as Map<String, dynamic>;
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              data['step']
+                                                  .toString()
+                                                  .substring(0, 6),
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Flexible(
+                                            child: Text(
+                                              data['step']
+                                                  .toString()
+                                                  .substring(7),
+                                              overflow: TextOverflow.fade,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    )
+                  : SizedBox(),
               UsersSuggestWidgets(),
               SizedBox(height: 10),
-              PlatingWidgets(),
+              platingRes == true ? PlatingWidgets() : SizedBox(),
             ],
           ),
         ),

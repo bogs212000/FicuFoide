@@ -9,14 +9,14 @@ import 'package:velocity_x/velocity_x.dart';
 import 'dart:io';
 import '../../../cons/image.dart';
 
-class FoodImages extends StatefulWidget {
-  const FoodImages({super.key});
+class AddFoodImages extends StatefulWidget {
+  const AddFoodImages({super.key});
 
   @override
-  State<FoodImages> createState() => _FoodImagesState();
+  State<AddFoodImages> createState() => _AddFoodImagesState();
 }
 
-class _FoodImagesState extends State<FoodImages> {
+class _AddFoodImagesState extends State<AddFoodImages> {
 
 
   File? _image;
@@ -38,7 +38,7 @@ class _FoodImagesState extends State<FoodImages> {
     List<String> pictureUrls = [];
     try {
       Reference storageReference =
-          FirebaseStorage.instance.ref().child(resText!);
+      FirebaseStorage.instance.ref().child(foodInfoPageDocName!);
 
       ListResult result = await storageReference.listAll();
       for (Reference ref in result.items) {
@@ -87,6 +87,12 @@ class _FoodImagesState extends State<FoodImages> {
             children: [
               'Images'.text.bold.size(20).make(),
               Spacer(),
+              GestureDetector(
+                child: Icon(Icons.add, color: Colors.grey),
+                onTap: () {
+                  _openImagePicker();
+                },
+              ),
             ],
           ),
         ),

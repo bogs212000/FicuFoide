@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -51,7 +52,7 @@ class _PopularWidgetsState extends State<PopularWidgets> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   image: DecorationImage(
-                    image: NetworkImage(imageUrl),
+                    image: CachedNetworkImageProvider(imageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),

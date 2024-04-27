@@ -9,14 +9,14 @@ import 'dart:io';
 import '../../../cons/image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class PlatingWidgets extends StatefulWidget {
-  const PlatingWidgets({super.key});
+class AddPlatingWidgets extends StatefulWidget {
+  const AddPlatingWidgets({super.key});
 
   @override
-  State<PlatingWidgets> createState() => _PlatingWidgetsState();
+  State<AddPlatingWidgets> createState() => _AddPlatingWidgetsState();
 }
 
-class _PlatingWidgetsState extends State<PlatingWidgets> {
+class _AddPlatingWidgetsState extends State<AddPlatingWidgets> {
   File? _image;
 
   late String imageUrl;
@@ -81,7 +81,29 @@ class _PlatingWidgetsState extends State<PlatingWidgets> {
         child: Row(
           children: [
             'Plating Images'.text.bold.size(20).make(),
+            CupertinoSwitch(
+              activeColor: Colors.green.shade900,
+              thumbColor: Colors.white,
+              trackColor: Colors.grey,
+              value: plating!,
+              onChanged: (value) async {
+                await FirebaseFirestore.instance
+                    .collection('foods')
+                    .doc('$foodInfoPageDocName')
+                    .update({'plating': value});
+
+                setState(() {
+                  plating = value;
+                });
+              },
+            ),
             Spacer(),
+            GestureDetector(
+              child: Icon(Icons.add, color: Colors.grey),
+              onTap: () {
+                _openImagePicker();
+              },
+            )
           ],
         ),
       ),
