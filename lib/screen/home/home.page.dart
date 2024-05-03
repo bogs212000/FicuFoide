@@ -33,12 +33,14 @@ class _HomeState extends State<Home> {
     fetchRole(setState);
     super.initState();
   }
+
   Future loadModel() async {
     Tflite.close();
     String res;
 
     res = (await Tflite.loadModel(
-        model: "assets/image_model/model_unquant.tflite", labels: "assets/image_model/labels.txt"))!;
+        model: "assets/image_model/model_unquant.tflite",
+        labels: "assets/image_model/labels.txt"))!;
     print("Models loading status: $res");
   }
 
@@ -59,13 +61,13 @@ class _HomeState extends State<Home> {
       final recognition = recognitions[0];
 
       // Check if the confidence score of the recognition is below a certain threshold
-      if (recognition['confidence'] < 0.6) { // Adjust the threshold as needed
+      if (recognition['confidence'] < 0.6) {
+        // Adjust the threshold as needed
         // Handle the case where recognition confidence is too low
         setState(() {
           resCon = 'low';
         });
         print(resCon);
-
       }
 
       // Update UI with recognition result
@@ -82,23 +84,23 @@ class _HomeState extends State<Home> {
     }
   }
 
-
   Future<void> _openImagePicker() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? pickedImage =
-    await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
-    if (pickedImage != null) {if (pickedImage != null) {
-      File image = File(pickedImage.path);
-      resultImage = File(pickedImage.path);
-      await classifyImage(image);
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 100);
+    if (pickedImage != null) {
+      if (pickedImage != null) {
+        File image = File(pickedImage.path);
+        resultImage = File(pickedImage.path);
+        await classifyImage(image);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResultPage(),
-        ),
-      );
-    }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResultPage(),
+          ),
+        );
+      }
     }
   }
 
@@ -120,7 +122,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     int hours = DateTime.now().hour;
@@ -134,7 +135,7 @@ class _HomeState extends State<Home> {
             children: [
               Container(
                 padding:
-                    EdgeInsets.only(left: 20, right: 20, top: 60, bottom: 20),
+                    EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -144,6 +145,17 @@ class _HomeState extends State<Home> {
                 ),
                 child: Column(
                   children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/login');
+                            },
+                            child: 'Sign in'.text.color(Colors.white).make()),
+                      ],
+                    ),
+                    SizedBox(height: 20),
                     Row(
                       children: [
                         GestureDetector(
@@ -172,8 +184,8 @@ class _HomeState extends State<Home> {
                     ),
                     Row(
                       children: [
-                        'Hello! '.text.size(30).color(Colors.white).bold.make(),
-                        'Ednalyn'.text.size(30).color(Colors.white).bold.make()
+                        'Hello '.text.size(30).color(Colors.white).bold.make(),
+                        'User!'.text.size(30).color(Colors.white).bold.make()
                       ],
                     ),
                     Row(
@@ -261,14 +273,16 @@ class _HomeState extends State<Home> {
                                 child: ElevatedButton(
                                     onPressed: () {
                                       _openImagePicker();
-                                    }, child: Text('Camera'))),
+                                    },
+                                    child: Text('Camera'))),
                             SizedBox(height: 10),
                             SizedBox(
                                 height: 30,
                                 child: ElevatedButton(
                                     onPressed: () {
                                       pickImage();
-                                    }, child: Text('Gallery'))),
+                                    },
+                                    child: Text('Gallery'))),
                           ],
                         ),
                       )),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:ficufoide/screen/auth/signin.dart';
 import 'package:ficufoide/screen/food/food.info.dart';
 import 'package:ficufoide/screen/home/home.page.dart';
 import 'package:ficufoide/screen/navbar/navbar.dart';
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> {
       home: NavBar(),
       routes: {
         '/showFoodInfoPage': (context) => FoodInfoPage(),
+        '/login': (context) => SigninPage(),
       },
     );
   }
