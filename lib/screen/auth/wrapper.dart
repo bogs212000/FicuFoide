@@ -5,6 +5,8 @@ import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../navbar/navbar_admin.dart';
+
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
 
@@ -14,7 +16,7 @@ class Wrapper extends StatelessWidget {
     String? email = FirebaseAuth.instance.currentUser?.email;
     return StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('user')
+          .collection('users')
           .doc('$email')
           .snapshots(),
       builder:
@@ -53,7 +55,7 @@ class Wrapper extends StatelessWidget {
                 return NavBar();
               }
               if ((userData.data!['role'] == "admin")) {
-                return NavBar();
+                return NavBarAdmin();
               } else {
                 return NavBar();
               }

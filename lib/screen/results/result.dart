@@ -44,9 +44,18 @@ class _ResultPageState extends State<ResultPage> {
         ? ResLow()
         : Scaffold(
             appBar: AppBar(
+              flexibleSpace: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.blue, Colors.green],
+                  ),
+                ),
+              ),
               centerTitle: true,
-              title: 'Results'.text.bold.make(),
-              backgroundColor: Colors.white,
+              foregroundColor: Colors.white,
+              title: 'Results'.text.bold.color(Colors.white).make(),
               elevation: 3,
             ),
             body: Container(
@@ -85,7 +94,7 @@ class _ResultPageState extends State<ResultPage> {
                                 end: Alignment.bottomCenter,
                                 colors: [
                                   Colors.transparent,
-                                  Colors.black.withOpacity(1), // Shadow color
+                                  Colors.black.withOpacity(.1), // Shadow color
                                 ],
                               ),
                             ),

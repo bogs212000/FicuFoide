@@ -20,6 +20,20 @@ Future<void> fetchFoodName(Function setState) async {
     // Handle errors
   }
 }
+
+Future<void> fetchUsername(Function setState) async {
+  try {
+    final snapshot =
+    await FirebaseFirestore.instance.collection('users').doc('$currentEmail').get();
+    setState(() {
+      username = snapshot.data()?['username'];
+    });
+    print('$foodName');
+  } catch (e) {
+    // Handle errors
+  }
+}
+
 Future<void> fetchRole(Function setState) async {
   try {
     final snapshot =

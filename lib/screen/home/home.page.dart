@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ficufoide/loading/loading_to_success.dart';
 import 'package:ficufoide/screen/home/home_widgets/popular.widget.dart';
 import 'package:ficufoide/screen/home/home_widgets/topics.widget.dart';
 import 'package:ficufoide/cons/image.dart';
@@ -13,6 +14,9 @@ import 'package:tflite/tflite.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../cons/const.dart';
+import '../../cons/firebase.dart';
+import '../../cons/user.dart';
 import '../../fetch/fetch.dart';
 
 class Home extends StatefulWidget {
@@ -31,6 +35,7 @@ class _HomeState extends State<Home> {
     // TODO: implement initState
     loadModel();
     fetchRole(setState);
+    fetchUsername(setState);
     super.initState();
   }
 
@@ -97,7 +102,7 @@ class _HomeState extends State<Home> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ResultPage(),
+            builder: (context) => LoadSuccess(),
           ),
         );
       }
@@ -116,7 +121,7 @@ class _HomeState extends State<Home> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ResultPage(),
+          builder: (context) => LoadSuccess(),
         ),
       );
     }
@@ -148,11 +153,11 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        GestureDetector(
+                        role == '' ? GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, '/login');
                             },
-                            child: 'Sign in'.text.color(Colors.white).make()),
+                            child: 'Sign in'.text.color(Colors.white).make()) : SizedBox(),
                       ],
                     ),
                     SizedBox(height: 20),
@@ -185,7 +190,7 @@ class _HomeState extends State<Home> {
                     Row(
                       children: [
                         'Hello '.text.size(30).color(Colors.white).bold.make(),
-                        'User!'.text.size(30).color(Colors.white).bold.make()
+                        '$username'.text.size(30).color(Colors.white).bold.make()
                       ],
                     ),
                     Row(

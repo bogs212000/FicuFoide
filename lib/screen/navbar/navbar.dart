@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
 
 import '../food/food.add.dart';
+import '../profile/profilepage.dart';
 class NavBar extends StatefulWidget {
   NavBar({Key? key,}) : super(key: key);
   static String id = "NavBar";
@@ -18,11 +19,10 @@ class NavBar extends StatefulWidget {
 class _NavBarState extends State<NavBar> {
   static final List<Widget> _myPages = <Widget>[
     Home(),
-    FoodAddPage(),
-    Home(),
+    ProfilePage(),
   ];
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,10 +44,6 @@ class _NavBarState extends State<NavBar> {
         FlashyTabBarItem(
           icon: Icon(Icons.home),
           title: Text('Home'),
-        ),
-        FlashyTabBarItem(
-          icon: Icon(Icons.feed),
-          title: Text('Feed'),
         ),
         FlashyTabBarItem(
           icon: Icon(Icons.person),

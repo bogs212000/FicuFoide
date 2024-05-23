@@ -158,7 +158,9 @@ class _SigninPageState extends State<SigninPage>
                           SizedBox(
                             height: 35,
                             child: ElevatedButton(
-                              onPressed: () async {},
+                              onPressed: () async {
+                                await _login(context);
+                              },
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: Colors.white,
                                 backgroundColor: Colors.blue,
@@ -191,7 +193,9 @@ class _SigninPageState extends State<SigninPage>
                           TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
                     ),
                     TextButton(
-                      onPressed: () async {},
+                      onPressed: () async {
+                        Navigator.pushNamed(context, '/SignUpPage');
+                      },
                       child: Text(
                         "Sign Up",
                         style: TextStyle(fontSize: 12, color: Colors.white),
@@ -204,6 +208,48 @@ class _SigninPageState extends State<SigninPage>
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _login(BuildContext context) async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      // Navigate to the next screen or do something on successful login
+    } on FirebaseAuthException catch (e) {
+      String message;
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      } else {
+        message = 'An error occurred. Please try again.';
+      }
+      _showErrorDialog(context, message);
+    } catch (e) {
+      _showErrorDialog(context, 'An unexpected error occurred.');
+    }
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 //
