@@ -1,3 +1,4 @@
+import 'package:ficufoide/fetch/fetch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -234,6 +235,9 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         _isLoading = false;
       });
+      fetchRole(setState);
+      fetchFoodName(setState);
+      Navigator.pushNamedAndRemoveUntil(context, '/AuthWrapper', (route) => false);
       // Navigate to the next screen or display a success message
     } on FirebaseAuthException catch (e) {
       setState(() {

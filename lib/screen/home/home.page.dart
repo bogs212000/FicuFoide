@@ -36,6 +36,9 @@ class _HomeState extends State<Home> {
     loadModel();
     fetchRole(setState);
     fetchUsername(setState);
+    fetchConfidence(setState);
+    print(username);
+    print(role);
     super.initState();
   }
 
@@ -65,8 +68,9 @@ class _HomeState extends State<Home> {
       // Get the first recognition result
       final recognition = recognitions[0];
 
-      // Check if the confidence score of the recognition is below a certain threshold
-      if (recognition['confidence'] < 0.6) {
+      // Check if the
+      // score of the recognition is below a certain threshold
+      if (recognition['confidence'] < confidence) {
         // Adjust the threshold as needed
         // Handle the case where recognition confidence is too low
         setState(() {
@@ -74,7 +78,8 @@ class _HomeState extends State<Home> {
         });
         print(resCon);
       }
-
+      await fetchUsername(setState);
+      await fetchRole(setState);
       // Update UI with recognition result
       setState(() {
         _results = recognitions;
@@ -153,7 +158,7 @@ class _HomeState extends State<Home> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        role == '' ? GestureDetector(
+                        role == null ? GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(context, '/login');
                             },
@@ -167,11 +172,7 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             Scaffold.of(context).openDrawer();
                           },
-                          child: CircleAvatar(
-                            radius: 40,
-                            backgroundImage: CachedNetworkImageProvider(
-                                'https://t4.ftcdn.net/jpg/04/52/75/21/360_F_452752187_LCS2HVvLfrXDhpVmufmMZ5N6vNee8E0e.jpg'),
-                          ),
+                          child: Image.asset('assets/img.png', scale: 1.5,)
                         ),
                         Spacer(),
                         hours >= 6 && hours <= 17
@@ -190,7 +191,19 @@ class _HomeState extends State<Home> {
                     Row(
                       children: [
                         'Hello '.text.size(30).color(Colors.white).bold.make(),
-                        '$username'.text.size(30).color(Colors.white).bold.make()
+                        username != null
+                            ? '$username'
+                                .text
+                                .size(30)
+                                .color(Colors.white)
+                                .bold
+                                .make()
+                            : 'user'
+                                .text
+                                .size(30)
+                                .color(Colors.white)
+                                .bold
+                                .make()
                       ],
                     ),
                     Row(

@@ -2,7 +2,14 @@
 class Assets {
   Assets._();
 
+  static const String assetsAi = 'assets/ai.png';
   static const String assetsCook = 'assets/cook.png';
+  static const String assetsImageModelLabels = 'assets/image_model/labels.txt';
+  static const String assetsImageModelModelUnquant = 'assets/image_model/model_unquant.tflite';
+  static const String assetsImg = 'assets/img.png';
   static const String assetsSun = 'assets/sun.png';
+  static const String imageModelLabels = 'assets/image_model/labels.txt';
+  static const String imageModelModelUnquant = 'assets/image_model/model_unquant.tflite';
+  static const String lottieLoading = 'assets/lottie/loading.json';
 
 }

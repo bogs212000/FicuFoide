@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ficufoide/cons/image.dart';
 
+import '../cons/const.dart';
 import '../cons/firebase.dart';
 import '../cons/user.dart';
 
@@ -28,7 +29,7 @@ Future<void> fetchUsername(Function setState) async {
     setState(() {
       username = snapshot.data()?['username'];
     });
-    print('$foodName');
+    print('$username');
   } catch (e) {
     // Handle errors
   }
@@ -43,6 +44,20 @@ Future<void> fetchRole(Function setState) async {
       role = snapshot.data()?['role'];
     });
     print('$role');
+  } catch (e) {
+    // Handle errors
+  }
+}
+
+Future<void> fetchConfidence(Function setState) async {
+  try {
+    final snapshot =
+    await FirebaseFirestore.instance.collection('settings').doc('confidence').get();
+
+    setState(() {
+      confidence = snapshot.data()?['confidence'];
+    });
+    print('$confidence');
   } catch (e) {
     // Handle errors
   }

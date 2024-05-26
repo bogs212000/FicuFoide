@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:io';
 import 'package:ficufoide/screen/home/home.page.dart';
+import 'package:ficufoide/screen/profile/profilepage.dart';
 import 'package:ficufoide/screen/results/result.dart';
 import 'package:flutter/material.dart';
 import 'package:flashy_tab_bar2/flashy_tab_bar2.dart';
@@ -19,10 +20,10 @@ class _NavBarAdminState extends State<NavBarAdmin> {
   static final List<Widget> _myPages = <Widget>[
     Home(),
     FoodAddPage(),
-    Home(),
+    ProfilePage(),
   ];
 
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../cons/const.dart';
+import '../../cons/firebase.dart';
 import '../../cons/user.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,8 +25,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _fetchUserData() async {
     if (user != null) {
-      DocumentSnapshot userDoc =
-      await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
       setState(() {
         userData = userDoc.data() as Map<String, dynamic>?;
       });
@@ -45,9 +48,9 @@ class _ProfilePageState extends State<ProfilePage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+               Container(
                 padding:
-                EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 20),
+                    EdgeInsets.only(left: 20, right: 20, top: 30, bottom: 20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -60,12 +63,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        role == ''
+                        role == null
                             ? GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            child: 'Sign in'.text.color(Colors.white).make())
+                                onTap: () {
+                                  Navigator.pushNamed(context, '/login');
+                                },
+                                child:
+                                    'Sign in'.text.color(Colors.white).make())
                             : SizedBox(),
                       ],
                     ),
@@ -85,29 +89,33 @@ class _ProfilePageState extends State<ProfilePage> {
                         Spacer(),
                         hours >= 6 && hours <= 17
                             ? Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Image.asset('assets/sun.png',
-                              height: 70, width: 70),
-                        )
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Image.asset('assets/sun.png',
+                                    height: 70, width: 70),
+                              )
                             : Padding(
-                          padding: const EdgeInsets.only(right: 10),
-                          child: Image.asset('assets/sun.png',
-                              height: 70, width: 70),
-                        ),
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Image.asset('assets/sun.png',
+                                    height: 70, width: 70),
+                              ),
                       ],
                     ),
                     Row(
                       children: [
-                        'Hello '.text
-                            .size(30)
-                            .color(Colors.white)
-                            .bold
-                            .make(),
-                        '$username'.text
-                            .size(30)
-                            .color(Colors.white)
-                            .bold
-                            .make()
+                        'Hello '.text.size(30).color(Colors.white).bold.make(),
+                        username != null
+                            ? '$username'
+                                .text
+                                .size(30)
+                                .color(Colors.white)
+                                .bold
+                                .make()
+                            : 'user'
+                                .text
+                                .size(30)
+                                .color(Colors.white)
+                                .bold
+                                .make()
                       ],
                     ),
                     Row(
@@ -125,15 +133,60 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 10),
               Padding(
                 padding:
-                EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 20),
+                    EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 20),
                 child: Container(
                   height: 100,
                   width: double.infinity,
                   decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    children: [
-                    ],
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  child: Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Column(
+                      children: [
+                        role != null || username != null ?  Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [Colors.blue, Colors.green],
+                            ),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 24.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              setState(() {
+                                role = '';
+                                username = null;
+                                currentEmail = null;
+                              });
+                              Navigator.pushNamedAndRemoveUntil(context, '/Splashscreen', (route) => false);
+                            },
+                            icon: Icon(
+                              Icons.login_outlined,
+                              color: Colors.white,
+                            ),
+                            label: Text(
+                              'Sign out',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                            ),
+                          ),
+                        ) : SizedBox(),
+                      ],
+                    ),
                   ),
                 ),
               ),

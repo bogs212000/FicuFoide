@@ -5,6 +5,8 @@ import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../loading/splashscreen.dart';
+
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({Key? key}) : super(key: key);
 
@@ -25,7 +27,7 @@ class AuthWrapper extends StatelessWidget {
           } else if (snapshot.hasData) {
             return Wrapper();
           } else {
-            return NavBar();
+            return Splashscreen();
           }
         },
       ),

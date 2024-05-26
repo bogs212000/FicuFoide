@@ -15,6 +15,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+import '../../cons/firebase.dart';
+import '../../cons/user.dart';
+
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key});
 
@@ -23,10 +26,16 @@ class ResultPage extends StatefulWidget {
 }
 
 class _ResultPageState extends State<ResultPage> {
+  final TextEditingController comment = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
     fetchFoodName(setState);
+    fetchRole(setState);
+    fetchUsername(setState);
+    print(username);
+    print(role);
     super.initState();
   }
 
@@ -137,9 +146,9 @@ class _ResultPageState extends State<ResultPage> {
                                   child: Text(
                                     foodName,
                                     style: TextStyle(
-                                        fontSize: 30,
+                                        fontSize: 25,
                                         fontWeight: FontWeight.bold),
-                                    overflow: TextOverflow.ellipsis,
+                                    overflow: TextOverflow.fade,
                                   ),
                                 ),
                               ],
@@ -149,7 +158,7 @@ class _ResultPageState extends State<ResultPage> {
                     //Intro
                     Padding(
                         padding: const EdgeInsets.only(
-                            left: 10, right: 10, bottom: 5),
+                            left: 15, right: 15, bottom: 5),
                         child: StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection('foods')
@@ -419,7 +428,6 @@ class _ResultPageState extends State<ResultPage> {
                         : SizedBox(),
                     UsersSuggestWidgets(),
                     SizedBox(height: 10),
-                    platingRes == true ? PlatingWidgets() : SizedBox(),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Row(
@@ -429,6 +437,7 @@ class _ResultPageState extends State<ResultPage> {
                             child: Padding(
                               padding: const EdgeInsets.only(right: 10.0),
                               child: TextField(
+                                controller: comment,
                                 maxLines: 2,
                                 decoration: InputDecoration(
                                   hintText: 'Comment or suggestions',
@@ -444,12 +453,63 @@ class _ResultPageState extends State<ResultPage> {
                               SizedBox(
                                 height: 40,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text('Thank you!'),
-                                      ),
-                                    );
+                                  onPressed: () async {
+                                    if ( user != null || username != null || role != null
+                                    ) {
+                                      try {
+                                        await FirebaseFirestore.instance
+                                            .collection('foods')
+                                            .doc(resText)
+                                            .collection(resText!)
+                                            .add({
+                                          'username': username,
+                                          'comment': comment.text,
+                                          'createdAt': DateTime.now(),
+                                        });
+                                        comment.clear();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text('Thank you!'),
+                                          ),
+                                        );
+                                      } catch (e) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content:
+                                                Text('Something went wrong!'),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text('Error'),
+                                            content: Text(
+                                                'Please sign in to send a comment or suggestion.'),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                child: Text('Cancel'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                child: Text('Sign in'),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  Navigator.pushNamed(context, '/login');
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   },
                                   child: Icon(
                                     Icons.send,
@@ -475,6 +535,8 @@ class _ResultPageState extends State<ResultPage> {
                         ],
                       ),
                     ),
+                    platingRes == true ? PlatingWidgets() : SizedBox(),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),

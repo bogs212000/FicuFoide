@@ -9,6 +9,8 @@ import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'loading/splashscreen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,6 +36,8 @@ class _MyAppState extends State<MyApp> {
         '/showFoodInfoPage': (context) => FoodInfoPage(),
         '/login': (context) => SigninPage(),
         '/SignUpPage': (context) => SignUpPage(),
+        '/AuthWrapper': (context) => AuthWrapper(),
+        '/Splashscreen': (context) => Splashscreen(),
       },
     );
   }

@@ -76,6 +76,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/img.png
     - assets/lottie/
     - assets/image_model/labels.txt
     - assets/image_model/model_unquant.tflite

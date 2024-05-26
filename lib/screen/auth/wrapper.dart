@@ -5,6 +5,7 @@ import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../loading/splashscreen.dart';
 import '../navbar/navbar_admin.dart';
 
 class Wrapper extends StatelessWidget {
@@ -52,12 +53,12 @@ class Wrapper extends StatelessWidget {
               context,
             ) {
               if ((userData.data!['role'] == "user")) {
-                return NavBar();
+                return Splashscreen();
               }
               if ((userData.data!['role'] == "admin")) {
                 return NavBarAdmin();
               } else {
-                return NavBar();
+                return Splashscreen();
               }
             },
           );
