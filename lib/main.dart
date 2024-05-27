@@ -6,6 +6,7 @@ import 'package:ficufoide/screen/auth/signup.dart';
 import 'package:ficufoide/screen/food/food.info.dart';
 import 'package:ficufoide/screen/home/home.page.dart';
 import 'package:ficufoide/screen/navbar/navbar.dart';
+import 'package:ficufoide/screen/suggetion/suggestion.list.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
         '/SignUpPage': (context) => SignUpPage(),
         '/AuthWrapper': (context) => AuthWrapper(),
         '/Splashscreen': (context) => Splashscreen(),
+        '/topicList': (context) => SuggestionList(),
       },
     );
   }

@@ -1,1 +1,2 @@
 double? confidence;
+String? list;

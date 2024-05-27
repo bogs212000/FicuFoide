@@ -38,9 +38,18 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [Colors.blue, Colors.green],
+            ),
+          ),
+        ),
         centerTitle: true,
-        title: 'Edit Info'.text.bold.make(),
-        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        title: 'Edit info'.text.bold.color(Colors.white).make(),
         elevation: 3,
       ),
       body: Container(
@@ -313,7 +322,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   controller: foodIngredientsController,
                   maxLines: 2,
                   decoration: InputDecoration(
-                    hintText: 'Enter ingredients here',
+                    hintText: 'Enter ingredients here. input format: (#. Text)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -468,7 +477,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   controller: foodInstructionsController,
                   maxLines: 2,
                   decoration: InputDecoration(
-                    hintText: 'Enter instructions here',
+                    hintText: 'Enter instructions here. input format : (Step # Text)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -497,8 +506,6 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   ),
                 ],
               ),
-
-              UsersSuggestWidgets(),
               SizedBox(height: 10),
               PlatingWidgets(),
               SizedBox(height: 10),

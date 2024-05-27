@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ficufoide/loading/splashscreen.admin.dart';
 import 'package:ficufoide/screen/navbar/navbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +57,7 @@ class Wrapper extends StatelessWidget {
                 return Splashscreen();
               }
               if ((userData.data!['role'] == "admin")) {
-                return NavBarAdmin();
+                return SplashscreenAdmin();
               } else {
                 return Splashscreen();
               }

@@ -49,7 +49,7 @@ class _ResultPageState extends State<ResultPage> {
 
   @override
   Widget build(BuildContext context) {
-    return resCon == 'low'
+    return resCon == 'low' || resText == '5 Error'
         ? ResLow()
         : Scaffold(
             appBar: AppBar(
