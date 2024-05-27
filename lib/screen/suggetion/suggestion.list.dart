@@ -60,7 +60,6 @@ class _SuggestionListState extends State<SuggestionList> {
                     borderRadius: BorderRadius.circular(5),
                     color: Colors.blue[50],
                   ),
-                  width: 200,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,7 +86,7 @@ class _SuggestionListState extends State<SuggestionList> {
                       Text(
                         user['comment'],
                         maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.fade,
                       ),
                     ],
                   ),
