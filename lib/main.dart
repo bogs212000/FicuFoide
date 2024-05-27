@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:ficufoide/screen/auth/auth.wrapper.dart';
+import 'package:ficufoide/screen/auth/forgot.pass.dart';
 import 'package:ficufoide/screen/auth/signin.dart';
 import 'package:ficufoide/screen/auth/signup.dart';
 import 'package:ficufoide/screen/food/food.info.dart';
@@ -40,6 +41,7 @@ class _MyAppState extends State<MyApp> {
         '/AuthWrapper': (context) => AuthWrapper(),
         '/Splashscreen': (context) => Splashscreen(),
         '/topicList': (context) => SuggestionList(),
+        '/forgotPass': (context) => ForgotPassPage(),
       },
     );
   }

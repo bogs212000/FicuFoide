@@ -17,7 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class FoodInfoPage extends StatefulWidget {
-   FoodInfoPage({super.key});
+  FoodInfoPage({super.key});
 
   @override
   State<FoodInfoPage> createState() => _FoodInfoPageState();
@@ -25,8 +25,10 @@ class FoodInfoPage extends StatefulWidget {
 
 class _FoodInfoPageState extends State<FoodInfoPage> {
   final TextEditingController foodInfoController = TextEditingController();
-  final TextEditingController foodIngredientsController = TextEditingController();
-  final TextEditingController foodInstructionsController = TextEditingController();
+  final TextEditingController foodIngredientsController =
+      TextEditingController();
+  final TextEditingController foodInstructionsController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -338,8 +340,13 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                       // Save the updated text to Firestore
                       await FirebaseFirestore.instance
                           .collection('foods')
-                          .doc('$foodInfoPageDocName').collection('ingredients').doc(docId)
-                          .set({'ingredient': foodIngredientsController.text});
+                          .doc('$foodInfoPageDocName')
+                          .collection('ingredients')
+                          .doc(docId)
+                          .set({
+                        'ingredient': foodIngredientsController.text,
+                        'createdAt': DateTime.now()
+                      });
                       foodIngredientsController.clear();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -477,7 +484,8 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   controller: foodInstructionsController,
                   maxLines: 2,
                   decoration: InputDecoration(
-                    hintText: 'Enter instructions here. input format : (Step # Text)',
+                    hintText:
+                        'Enter instructions here. input format : (Step # Text)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -493,8 +501,15 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                       // Save the updated text to Firestore
                       await FirebaseFirestore.instance
                           .collection('foods')
-                          .doc('$foodInfoPageDocName').collection('instructions').doc(docId)
-                          .set({'step': foodInstructionsController.text});
+                          .doc('$foodInfoPageDocName')
+                          .collection('instructions')
+                          .doc(docId)
+                          .set(
+                        {
+                          'step': foodInstructionsController.text,
+                          'createdAt': DateTime.now()
+                        },
+                      );
                       foodInstructionsController.clear();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(

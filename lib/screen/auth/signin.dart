@@ -154,7 +154,9 @@ class _SigninPageState extends State<SigninPage>
                             Row(
                               children: [
                                 TextButton(
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    Navigator.pushNamed(context, '/forgotPass');
+                                  },
                                   child: Text(
                                     "Forgot password?",
                                     style: TextStyle(
