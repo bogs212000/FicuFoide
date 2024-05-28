@@ -232,7 +232,7 @@ class _ResultPageState extends State<ResultPage> {
                               stream: FirebaseFirestore.instance
                                   .collection("foods")
                                   .doc('$resText')
-                                  .collection('ingredients')
+                                  .collection('ingredients').orderBy('createdAt')
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -327,14 +327,14 @@ class _ResultPageState extends State<ResultPage> {
                     SizedBox(height: 10),
                     instructionsRes == true
                         ? Container(
-                            padding: EdgeInsets.only(left: 10, right: 10),
+                            padding: EdgeInsets.only(left: 10, right: 10,),
                             width: double.infinity,
-                            height: 150,
+                            height: 160,
                             child: StreamBuilder<QuerySnapshot>(
                               stream: FirebaseFirestore.instance
                                   .collection("foods")
                                   .doc('$resText')
-                                  .collection('instructions')
+                                  .collection('instructions').orderBy('createdAt', descending: false)
                                   .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -365,7 +365,7 @@ class _ResultPageState extends State<ResultPage> {
                                   );
                                 }
                                 return ListView.builder(
-                                  physics: snapshot.data!.size <= 2
+                                  physics: snapshot.data!.size <= 1
                                       ? NeverScrollableScrollPhysics()
                                       : BouncingScrollPhysics(),
                                   padding: EdgeInsets.only(top: 0),

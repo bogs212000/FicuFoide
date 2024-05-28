@@ -249,7 +249,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   stream: FirebaseFirestore.instance
                       .collection("foods")
                       .doc('$foodInfoPageDocName')
-                      .collection('ingredients')
+                      .collection('ingredients').orderBy('createdAt')
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -324,7 +324,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   controller: foodIngredientsController,
                   maxLines: 2,
                   decoration: InputDecoration(
-                    hintText: 'Enter ingredients here. input format: (#. Text)',
+                    hintText: 'Enter ingredients here. input format: (Text)',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
@@ -395,7 +395,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   stream: FirebaseFirestore.instance
                       .collection("foods")
                       .doc('$foodInfoPageDocName')
-                      .collection('instructions')
+                      .collection('instructions').orderBy('createdAt', descending: false)
                       .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -424,7 +424,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                       );
                     }
                     return ListView.builder(
-                      physics: snapshot.data!.size <= 2
+                      physics: snapshot.data!.size <= 1
                           ? NeverScrollableScrollPhysics()
                           : BouncingScrollPhysics(),
                       padding: EdgeInsets.only(top: 0),
@@ -478,6 +478,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                 ),
               ),
               //upload instructions
+              SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: TextField(

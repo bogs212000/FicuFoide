@@ -44,7 +44,7 @@ class _IngredientsWidgetsState extends State<IngredientsWidgets> {
             stream: FirebaseFirestore.instance
                 .collection("foods")
                 .doc('$resText')
-                .collection('ingredients')
+                .collection('ingredients').orderBy('createdAt')
                 .snapshots(),
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
